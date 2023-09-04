@@ -1,38 +1,69 @@
-.App {
-  text-align: center;
+
+.container-md {
+ 
+    margin-top: 40px;
+    
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.customize-dropdown {
+    background-color: white;
+    border: 0;
+    border-radius: var(--bs-border-radius);
+}
+.frame {
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+
+.input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback){
+    border: 0;
+}
+.dropdown-toggle:empty::after {
+margin-right: 20px;}
+
+
+.main-section {
+    margin-top: 40px;
+}
+
+.dropdown-menu.show{
+    width: inherit
+}
+
+.card-img-top {
+    width: 50px;
+    height: 50px;
+}
+.border-primary .row .col {
+   text-align: center;
+   width: 100%;
+   align-items: center;
+
+   
+}
+
+.border-primary {
+    width:  fit-content !important;
+}
+
+
+.border-primary .row .col .card-title {
+
+    margin-bottom:  0;
+}
+
+.card-body .card-text {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+*:focus {
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
   }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
