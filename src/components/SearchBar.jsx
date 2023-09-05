@@ -1,30 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { Form, InputGroup, DropdownButton, Dropdown } from "react-bootstrap";
 import ErrorHandler from "./ErrorHandler";
 import { fetchCity, fetchWeather } from "../actions/fetchData";
+import InputBar from "./InputBar";
+import { mainReducer, initialState } from "../reducer/mainReducer";
 export default function SearchBar({ setCurrentWeather, setLoading }) {
   const [error, setError] = useState([]);
-  const [expand, setExpand] = useState(false);
-  const [input, setInput] = useState("");
+  const [state, dispatch] = useReducer(mainReducer, initialState);
   const [weather, setWeather] = useState([]);
 
-  function onChange(e) {
-    setInput(e.target.value);
-    if (e.target.value === "") {
-      setExpand(false);
-    } else {
-      setExpand(true);
-    }
-  }
+  let { input, expand } = state;
 
   async function showForecast(list) {
     setLoading(true);
-    setInput(list.name + " ," + list.country);
+    // setInput(list.name + " ," + list.country);
 
     setTimeout(async () => {
       let response = await fetchWeather(list);
       setCurrentWeather(response);
-      setExpand(false);
+      dispatch({ type: "SET_EXPAND", payload: false });
       setLoading(false);
     }, 2000);
   }
@@ -49,20 +43,14 @@ export default function SearchBar({ setCurrentWeather, setLoading }) {
       {error.length > 0 ? <ErrorHandler errors={error} /> : ""}
 
       <InputGroup>
-        <Form.Control
-          onChange={(e) => onChange(e)}
-          placeholder="London, GB"
-          aria-label="Text input with dropdown button"
-          value={input}
-        />
-
+        <InputBar action={{ dispatch }} payload={{ input }} />
         <DropdownButton
           variant="outline-secondary"
           title=""
           id="input-group-dropdown-1"
           bsPrefix="customize-dropdown"
           show={expand}
-          onToggle={() => setExpand(!expand)}>
+          onToggle={() => dispatch({ type: "SET_EXPAND", payload: !expand })}>
           {weather.map((list, i) => {
             if (i + 1 === weather.length) {
               return (
