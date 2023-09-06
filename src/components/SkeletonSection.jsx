@@ -5,19 +5,17 @@ import { Col, Row, Card } from "react-bootstrap";
 
 export default function SkeletonSection() {
   return (
-    <Row>
-      <Col>
+    <Row className="justify-content-center">
+      <Col md={6} xs={10} sm={7} lg={5}>
         <Card
           border="primary"
-          style={{ width: "18rem", margin: "auto", textAlign: "center" }}>
+          style={{ width: "100%", margin: "auto", textAlign: "center" }}>
           <Card.Header>
-            <Skeleton height={90} width={300} />
+            <Skeleton height={90} />
           </Card.Header>
 
           <Card.Body>
-            <Card.Text>
-              <Skeleton height={40} width={300} />
-            </Card.Text>
+            <Skeleton height={40} />
           </Card.Body>
         </Card>
       </Col>

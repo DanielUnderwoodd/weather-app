@@ -2,26 +2,25 @@ import { Container } from "react-bootstrap";
 import SearchBar from "./components/SearchBar";
 import "./App.css";
 import Section from "./components/Section";
-import { useState } from "react";
+import { useReducer } from "react";
+import { appReducer, initialState } from "./reducer/appReducer";
+
 import EmptyTemplate from "./components/EmptyTemplate";
 
 export default function App() {
-  const [currentWeather, setCurrentWeather] = useState({});
-  const [isLoading, setLoading] = useState(false);
+  const [state, dispatch] = useReducer(appReducer, initialState);
+  let { currentWeather, isLoading } = state;
 
   return (
     <div className="bg-img">
       <Container fluid="md">
         <h1 style={{ textAlign: "center" }}>see diffrent cities weather</h1>
-        <SearchBar
-          setCurrentWeather={setCurrentWeather}
-          setLoading={setLoading}
-        />
+        <SearchBar appDispatch={dispatch} />
 
         {Object.keys(currentWeather).length ? (
-          <Section isLoading={isLoading} currentWeather={currentWeather} />
+          <Section payload={{ isLoading, currentWeather }} />
         ) : (
-          <EmptyTemplate isLoading={isLoading} />
+          <EmptyTemplate payload={{ isLoading }} />
         )}
       </Container>
     </div>

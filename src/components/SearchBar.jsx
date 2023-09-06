@@ -1,41 +1,50 @@
-import React, { useEffect, useReducer, useState } from "react";
-import { Form, InputGroup, DropdownButton, Dropdown } from "react-bootstrap";
+import React, { useEffect, useReducer } from "react";
+import { InputGroup } from "react-bootstrap";
+import WeatherDropdown from "./WeatherDropdown";
 import ErrorHandler from "./ErrorHandler";
 import { fetchCity, fetchWeather } from "../actions/fetchData";
 import InputBar from "./InputBar";
 import { mainReducer, initialState } from "../reducer/mainReducer";
-export default function SearchBar({ setCurrentWeather, setLoading }) {
-  const [error, setError] = useState([]);
+export default function SearchBar({ appDispatch }) {
   const [state, dispatch] = useReducer(mainReducer, initialState);
-  const [weather, setWeather] = useState([]);
 
-  let { input, expand } = state;
+  let { input, expand, weatherList, error } = state;
 
-  async function showForecast(list) {
-    setLoading(true);
-    // setInput(list.name + " ," + list.country);
+  async function getCurrentWeather(list) {
+    appDispatch({
+      type: "SET_LOADING",
+      payload: true,
+    });
+
+    dispatch({
+      type: "SET_INPUT",
+      payload: list.name + " ," + list.country,
+    });
 
     setTimeout(async () => {
-      let response = await fetchWeather(list);
-      setCurrentWeather(response);
-      dispatch({ type: "SET_EXPAND", payload: false });
-      setLoading(false);
+      await fetchWeather({
+        action: { appDispatch, dispatch },
+        payload: { list },
+      });
+      dispatch({
+        type: "SET_EXPAND",
+        payload: false,
+      });
+
+      appDispatch({
+        type: "SET_LOADING",
+        payload: false,
+      });
     }, 2000);
   }
 
   useEffect(() => {
-    async function fetchData() {
-      let response = await fetchCity(input);
-      if (response.type === "error") {
-        setWeather(response.payload);
-        setError((current) => {
-          return [...current, JSON.stringify(response.e.message)];
-        });
-      } else {
-        setWeather(response.payload);
+    async function fetch() {
+      if (input !== "") {
+        await fetchCity(dispatch, { input });
       }
     }
-    fetchData();
+    fetch();
   }, [input]);
 
   return (
@@ -44,32 +53,10 @@ export default function SearchBar({ setCurrentWeather, setLoading }) {
 
       <InputGroup>
         <InputBar action={{ dispatch }} payload={{ input }} />
-        <DropdownButton
-          variant="outline-secondary"
-          title=""
-          id="input-group-dropdown-1"
-          bsPrefix="customize-dropdown"
-          show={expand}
-          onToggle={() => dispatch({ type: "SET_EXPAND", payload: !expand })}>
-          {weather.map((list, i) => {
-            if (i + 1 === weather.length) {
-              return (
-                <Dropdown.Item onClick={() => showForecast(list)}>
-                  {list.name + " ," + list.country}
-                </Dropdown.Item>
-              );
-            } else {
-              return (
-                <>
-                  <Dropdown.Item role="menu" onClick={() => showForecast(list)}>
-                    {list.name + " ," + list.country}
-                  </Dropdown.Item>
-                  <Dropdown.Divider />
-                </>
-              );
-            }
-          })}
-        </DropdownButton>
+        <WeatherDropdown
+          action={{ dispatch, getCurrentWeather }}
+          payload={{ weatherList, expand }}
+        />
       </InputGroup>
     </div>
   );
