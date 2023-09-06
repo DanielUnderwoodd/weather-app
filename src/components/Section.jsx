@@ -9,9 +9,9 @@ export default function Section({ currentWeather, isLoading }) {
       {isLoading ? (
         <SkeletonSection />
       ) : (
-        <Row>
-          <Col>
-            <Card border="primary" style={{ width: "18rem", margin: "auto" }}>
+        <Row className="justify-content-center">
+          <Col md={6} xs="auto" sm={7} lg={5}>
+            <Card border="primary" style={{ width: "100%", margin: "auto" }}>
               <Card.Header>
                 {" "}
                 {moment(currentWeather.dt * 1000).format("MMMM Do , h:mm a")}
