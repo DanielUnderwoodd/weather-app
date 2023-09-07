@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { DropdownButton, Dropdown } from "react-bootstrap";
+import { WeatherContext, WeatherDispatchContext } from "../context/MainContext";
 
 export default function WeatherDropdown(props) {
-  let { expand, weatherList } = props.payload;
-  let { dispatch, getCurrentWeather } = props.action;
+  const dispatch = useContext(WeatherDispatchContext);
+  const state = useContext(WeatherContext);
+  let { expand, weatherList } = state;
+  let { getCurrentWeather } = props;
   return (
     <DropdownButton
       variant="outline-secondary"

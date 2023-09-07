@@ -1,11 +1,13 @@
 import cityApi from "../api/cityApi";
 import weatherApi from "../api/weatherApi";
 
-export const fetchCity = async (dispatch, payload) => {
+export const fetchCity = async ({ action, payload }) => {
+  let { dispatch } = action;
+  let { input } = payload;
   try {
     let response = await cityApi.get("", {
       params: {
-        q: payload.input,
+        q: input,
       },
     });
     if (response && response.data) {
@@ -23,8 +25,8 @@ export const fetchCity = async (dispatch, payload) => {
 };
 
 export const fetchWeather = async ({ action, payload }) => {
-  let { appDispatch, dispatch } = action;
-  let { lat, lon } = payload.list;
+  let { dispatch } = action;
+  let { lat, lon } = payload;
   try {
     let response = await weatherApi.get("", {
       params: {
@@ -33,7 +35,7 @@ export const fetchWeather = async ({ action, payload }) => {
       },
     });
     if (response && response.data) {
-      appDispatch({
+      dispatch({
         type: "SET_WEATHER",
         payload: response.data,
       });

@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Form } from "react-bootstrap";
+import { WeatherDispatchContext, WeatherContext } from "../context/MainContext";
 
-export default function InputBar(props) {
-  const { input } = props.payload;
-  const { dispatch } = props.action;
+export default function InputBar() {
+  const dispatch = useContext(WeatherDispatchContext);
+  const state = useContext(WeatherContext);
+  let { input } = state;
 
   function onChange(e) {
     dispatch({ type: "SET_INPUT", payload: e.target.value });

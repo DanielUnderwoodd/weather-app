@@ -2,8 +2,7 @@ import React from "react";
 import { Col, Row, Card } from "react-bootstrap";
 import SkeletonSection from "./SkeletonSection";
 
-export default function EmptyTemplate({ payload }) {
-  let { isLoading } = payload;
+export default function EmptyTemplate({ isLoading }) {
   return (
     <div className="main-section">
       {isLoading ? (

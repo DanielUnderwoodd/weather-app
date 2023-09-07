@@ -3,9 +3,7 @@ import SkeletonSection from "./SkeletonSection";
 import moment from "moment";
 import temp from "../assets/temp.svg";
 import { Col, Row, Card } from "react-bootstrap";
-export default function Section({ payload }) {
-  const { currentWeather, isLoading } = payload;
-  console.log(currentWeather);
+export default function Section({ currentWeather, isLoading }) {
   const {
     dt,
     weather,
