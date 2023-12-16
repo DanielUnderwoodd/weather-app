@@ -1,0 +1,20 @@
+name: Custom Docker Environment - GitHub Actions with Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t my-node-app .
+
+      - name: Run automated tests in Docker container
+        run: docker run my-node-app npm test
